@@ -18,9 +18,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="주식 트래커 API", version="0.1.0", lifespan=lifespan)
 
+import os
+
+_raw = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+_origins = [o.strip() for o in _raw.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
